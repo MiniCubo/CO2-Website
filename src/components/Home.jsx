@@ -6,8 +6,6 @@ import Footer from './Footer';
 function Home() {
   return (
     <div>
-      <Header title="Home Page" />
-
       <div>
         <div className="Objective">
           <h1><b>Objective</b></h1>

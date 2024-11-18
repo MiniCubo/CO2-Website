@@ -11,7 +11,6 @@ function App() {
   return (
     <Router>
       <Header title="Carbon Bank" />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/co2" element={<Mapa />} />

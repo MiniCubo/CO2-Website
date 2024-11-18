@@ -5,7 +5,6 @@ import Footer from './Footer'; // Asumiendo que tienes un componente de Footer
 function RealTime() {
   return (
     <>
-      <Header />
       <div className="googleMap" style={{
         display: 'flex',
         flexDirection: 'column',

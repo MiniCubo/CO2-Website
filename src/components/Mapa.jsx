@@ -25,8 +25,6 @@ function Mapa() {
 
   return (
     <div>
-      <Header title="Timelapse of CO2 Emissions in Mexico" />
-
       {info.length > 0 && (
         <div className="googleMap" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <h1>Timelapse of CO2 Emissions in Mexico</h1>
