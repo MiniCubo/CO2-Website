@@ -96,8 +96,6 @@ function Mapa() {
           </table>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }

@@ -22,7 +22,6 @@ function RealTime() {
           loading="lazy"
         ></iframe>
       </div>
-      <Footer />
     </>
   );
 }
