@@ -1,3 +1,5 @@
 November 18th 2024
 
 I started to translate the main pages to react in a new Repository. 
+Translated the main pages to react. No functionality of the overlay.
+Updated the local images so they can be visible.

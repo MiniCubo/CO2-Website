@@ -1,100 +1,59 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect } from 'react';
+import 'ol/ol.css';
+import { Map, View } from 'ol';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import OSM from 'ol/source/OSM';
+import VectorSource from 'ol/source/Vector';
+import { Style, Fill, Stroke } from 'ol/style';
+import { GeoJSON } from 'ol/format';
+import { fromLonLat } from 'ol/proj';
 
 function Mapa() {
-  const [info, setInfo] = useState([]);
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedState, setSelectedState] = useState('');
-
   useEffect(() => {
-    // Suponiendo que 'info' es un objeto pasado desde el backend
-    if (window.info) {
-      setInfo(window.info);
-    }
+    // Crear el mapa
+    const map = new Map({
+      target: 'map', // Elemento donde se renderiza el mapa
+      layers: [
+        new TileLayer({
+          source: new OSM(), // Capa de OpenStreetMap
+        }),
+        new VectorLayer({
+          source: new VectorSource({
+            url: 'https://raw.githubusercontent.com/PhantomJS/geojson-mexico/master/mexico-states.geojson', // Ruta al archivo GeoJSON de estados de México
+            format: new GeoJSON(),
+          }),
+          style: function (feature) {
+            return new Style({
+              fill: new Fill({
+                color: 'rgba(255, 255, 255, 0.6)', // Color de relleno de los estados
+              }),
+              stroke: new Stroke({
+                color: 'black', // Borde negro para los estados
+                width: 2, // Ancho del borde
+              }),
+            });
+          },
+        }),
+      ],
+      view: new View({
+        center: fromLonLat([-102.5528, 23.6345]), // Coordenadas de México
+        zoom: 5,
+      }),
+    });
+
+
+    // Asegurarse de que el mapa se limpia correctamente al desmontarse el componente
+    return () => {
+      map.setTarget(null);
+    };
   }, []);
 
-  const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
-  };
-
-  const handleStateChange = (event) => {
-    setSelectedState(event.target.value);
-  };
-
   return (
-    <div>
-      {info.length > 0 && (
-        <div className="googleMap" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <h1>Timelapse of CO2 Emissions in Mexico</h1>
-          <div className="mapFilling">
-            <div className="years">
-              <select id="selectionYear" onChange={handleYearChange}>
-                {info.map((state, index) => {
-                  const startYear = 1979;
-                  if (index > 0) {
-                    return (
-                      <option key={startYear + index} value={startYear + index}>
-                        {startYear + index}
-                      </option>
-                    );
-                  }
-                  return null;
-                })}
-              </select>
-            </div>
-            <div className="states">
-              <select id="selectionState" onChange={handleStateChange}>
-                {info[0] && info[0].map((row, index) => {
-                  if (index > 1) {
-                    return (
-                      <option key={row} value={row}>
-                        {row}
-                      </option>
-                    );
-                  }
-                  return null;
-                })}
-              </select>
-            </div>
-          </div>
-          <div id="map">
-            <div id="popup" className="ol-popup">
-              <a href="#" id="popup-closer" className="ol-popup-closer"></a>
-              <div id="popup-content"><p></p></div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {info.length > 0 && (
-        <div id="output">
-          <h1>Table data with the amount of vehicles circulating in Mexico from 1980 to 2023</h1>
-          <table>
-            {info.map((row, index) => {
-              if (index === 0) {
-                return (
-                  <thead key={index}>
-                    <tr>
-                      {row.map((column, columnIndex) => (
-                        <th key={columnIndex}>{column}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                );
-              } else {
-                return (
-                  <tr key={index}>
-                    {row.map((column, columnIndex) => (
-                      <td key={columnIndex}>{column}</td>
-                    ))}
-                  </tr>
-                );
-              }
-            })}
-          </table>
-        </div>
-      )}
+    <div style={{justifyContent:'center', display:'flex'}}>
+        <div id="map"  style={{ width: '70%', height: '500px'}}/>
     </div>
+    
   );
 }
 
