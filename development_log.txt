@@ -1,0 +1,12 @@
+October 10th 2024
+
+We updated the page to an express server and made the required changes to make the different destinations work.
+
+October 15th 2024
+
+We decided to give up on the real time emissions map, becuase the available APIs were of no use, and instead focused on the timelapse map.
+
+November 18th 2024
+
+We started to make the react page. Started to translate from ejs to react.
+

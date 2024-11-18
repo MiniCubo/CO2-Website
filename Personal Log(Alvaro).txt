@@ -1,0 +1,12 @@
+October 9th 2024
+
+I investigated the Tomtom's APIs to see if the project is possible. It is feasible and it is just pending reading the doc of the APIs.
+
+October 10th 2024
+
+I am just making the express server translation of the web page.
+
+October 14th 2024
+
+I investigated a bit more on the Tomtom and Here APIs and made the conclusion that these do not serve the purpose we were hoping to use them for. I am going to talk to the team
+and the teacher if we are going to discard this idea and just focus on the timelapse map.

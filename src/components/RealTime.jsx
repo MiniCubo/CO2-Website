@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from './Header'; // Asumiendo que tienes un componente de Header
-import Footer from './Footer'; // Asumiendo que tienes un componente de Footer
 
 function RealTime() {
   return (

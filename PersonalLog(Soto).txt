@@ -1,0 +1,3 @@
+November 18th 2024
+
+I started to translate the main pages to react in a new Repository. 
