@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 
 
-function Grafico1(props) {
+function Grafico2(props) {
 
     ChartJS.register(
         CategoryScale,
@@ -68,4 +68,4 @@ function Grafico1(props) {
     );
 }
 
-export default Grafico1;
+export default Grafico2;
