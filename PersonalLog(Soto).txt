@@ -5,3 +5,9 @@ Translated the main pages to react. No functionality of the overlay.
 Updated the local images so they can be visible.
 Added things to the Timelapse page
 Added the cvs in js format to gather data
+Added the first graphic to the Timelapse page
+
+November 19th 2024
+
+Added the second and last graphic to the Timelapse page
+Finished the timelapse page
