@@ -30,7 +30,7 @@ function RealTime(){
               <option value="Baja California">Baja California</option>
               <option value="Baja California Sur">Baja California Sur</option>
               <option value="Campeche">Campeche</option>
-              <option value="Coahuila de Zaragoza">Coahuila</option>
+              <option value="Coahuila">Coahuila</option>
               <option value="Colima">Coahuila</option>
               <option value="Chiapas">Chiapas</option>
               <option value="Chihuahua">Chihuahua</option>
@@ -40,8 +40,8 @@ function RealTime(){
               <option value="Guerrero">Guerrero</option>
               <option value="Hidalgo">Hidalgo</option>
               <option value="Jalisco">Jalisco</option>
-              <option value="Mexico">Estado de Mexico</option>
-              <option value="Michoacán de Ocampo">Michoacan</option>
+              <option value="México">Estado de Mexico</option>
+              <option value="Michoacán">Michoacan</option>
               <option value="Morelos">Morelos</option>
               <option value="Nayarit">Nayarit</option>
               <option value="Nuevo León">Nuevo Leon</option>
@@ -55,7 +55,7 @@ function RealTime(){
               <option value="Tabasco">Tabasco</option>
               <option value="Tamaulipas">Tamaulipas</option>
               <option value="Tlaxcala">Tlaxcala</option>
-              <option value="Veracruz de Ignacio de la Llave">Veracruz</option>
+              <option value="Veracruz">Veracruz</option>
               <option value="Yucatán">Yucatan</option>
               <option value="Zacatecas">Zacatecas</option>
           </select>
