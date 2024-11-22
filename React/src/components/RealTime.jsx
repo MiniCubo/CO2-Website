@@ -31,6 +31,7 @@ function RealTime(){
       total: item[estado]
     })));
   }, [datos, estado])
+
   return (
     <div>
       <div className="justify-content-center text-center">
@@ -39,8 +40,8 @@ function RealTime(){
             <Grafico1 data={carsPerYear}/>
         </div>
         <p className=" m-2"><b>Cars in {estado}</b> by Year</p>
-        <form>
-          <select name="nation" id="nation" value={estado} onChange={(e) => setEstado(e.target.value)}>
+        <form onChange={(e) => setEstado(e.target.value)}>
+          <select name="nation" id="nation" >
               <option value="Aguascalientes">Aguascalientes</option>
               <option value="Baja California">Baja California</option>
               <option value="Baja California Sur">Baja California Sur</option>
