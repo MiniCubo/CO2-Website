@@ -15,7 +15,7 @@ import {getCenter} from 'ol/extent';
 
 function Mapa() {
   const [datos, setDatos] = useState([]);
-  const [year, setYear] = useState(1980);
+  var year = 1980;
   const [geojsonData, setGeojsonData] = useState(null);
 
   useEffect(()=>{
@@ -80,13 +80,12 @@ function Mapa() {
         zoom: 5,
       }),
     });
-    
-    var popup = new Overlay({
+
+    const popup = new Overlay({
       element: document.getElementById('popup'),
     });
     map.addOverlay(popup);
-
-    var element = popup.getElement();
+    const element = popup.getElement();    
 
     map.on('click', function (evt) {
       const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
@@ -106,17 +105,17 @@ function Mapa() {
       popup.setPosition(coordinate);
 
       // Re-initialize the popover each time
+      const info = datos.find((dato) => {
+        return Number(dato.Año) === year;
+      });
+
       let popover = Popover.getInstance(element);
       if (popover) {
         popover.dispose();
       }
 
-      const info = datos.find((dato) => {
-        return Number(dato.Año) === year;
-      });
-
       popover = new Popover(element, {
-        animation: true,
+        animation: false,
         container: element,
         content: `<p>You clicked on:</p><strong>${name}</strong><br/><p>${info[name]}</p>`,
         html: true,
@@ -134,21 +133,22 @@ function Mapa() {
     // Hide the popup if no feature is clicked
     let popover = Popover.getInstance(element);
     if (popover) {
-      popover.dispose();
     }
   }
 });
+
+
 
     // Asegurarse de que el mapa se limpia correctamente al desmontarse el componente
     return () => {
       map.setTarget(null);
     };
-  }, [geojsonData, year]);
+  }, [geojsonData]);
 
   const years = Array.from({ length: 2023 - 1980 + 1 }, (_, i) => 1980 + i);
 
   function yearSet(e){
-    setYear(Number(e.target.value));
+    year = Number(e.target.value);
   }
 
   function centerState(e){
@@ -168,6 +168,12 @@ function Mapa() {
       map.getView().setZoom(7); // Adjust zoom level as needed
   
   }
+}
+
+function divRender(){
+  return(
+    <div id="popup"></div>
+  );
 }
 
   return (
@@ -217,7 +223,7 @@ function Mapa() {
       </div>
       
         <div id="map"  style={{ width: '70%', height: '500px'}}/>
-        <div id="popup"></div>
+        {divRender()}
     </div>
     
   );
