@@ -38,12 +38,12 @@ function Home() {
         <h2 className="pb-2 border-bottom">Features</h2>
         <div className="row g-4 py-5 row-cols-1 row-cols-lg-3">
           <div className="feature col">
-            <h3 className="fs-2 text-body-emphasis">CO2 real-time Emissions Map</h3>
-            <p>Have you ever wondered how much pollution the vehicles we use on a daily basis cause? Check out our page where you can see in real-time the emissions in Mexico.</p>
-            <Link to="/co2" className="icon-link">Call to action</Link>
+            <h3 className="fs-2 text-body-emphasis">Vehicles in Mexico Map</h3>
+            <p>Interact with a map to see the proportion of vehicles in each state, per a year basis. Click on each state to see the exact number of vehicles.</p>
+            <Link to="/map" className="icon-link">Call to action</Link>
           </div>
           <div className="feature col">
-            <h3 className="fs-2 text-body-emphasis">Timelapse of CO2 Emissions in Mexico</h3>
+            <h3 className="fs-2 text-body-emphasis">Timelapse of vehicles in Mexico</h3>
             <p>On this page, you will be able to find out how CO2 emissions from cars have increased in the past 4 decades.</p>
             <Link to="/timelapse" className="icon-link">Call to action</Link>
           </div>

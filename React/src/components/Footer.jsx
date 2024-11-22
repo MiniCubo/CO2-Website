@@ -10,7 +10,7 @@ function Footer() {
             <Link to="/" className="nav-link px-2 text-body-secondary">Home</Link>
           </li>
           <li className="nav-item">
-            <Link to="/co2" className="nav-link px-2 text-body-secondary">CO2 Emissions</Link>
+            <Link to="/map" className="nav-link px-2 text-body-secondary">CO2 Emissions</Link>
           </li>
           <li className="nav-item">
             <Link to="/timelapse" className="nav-link px-2 text-body-secondary">Timelapse</Link>

@@ -15,7 +15,7 @@ function Header() {
             <Link to="/" className="nav-link active" aria-current="page">Home</Link>
           </li>
           <li className="nav-item">
-            <Link to="/co2" className="nav-link">CO2 Emissions</Link>
+            <Link to="/map" className="nav-link">Map</Link>
           </li>
           <li className="nav-item">
             <Link to="/timelapse" className="nav-link">Timelapse</Link>

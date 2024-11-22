@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import 'ol/ol.css';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
@@ -15,7 +15,8 @@ import {getCenter} from 'ol/extent';
 
 function Mapa() {
   const [datos, setDatos] = useState([]);
-  var year = 1980;
+  // var year = 1980;
+  const [year, setYear] = useState(Number(1980));
   const [geojsonData, setGeojsonData] = useState(null);
 
   useEffect(()=>{
@@ -30,125 +31,112 @@ function Mapa() {
     });
   }, []);
 
-  var map = null;
+  const popupRef = useRef(null);
+  var map = null
 
   useEffect(() => {
     if (!geojsonData) return;
-    // Crear el mapa
+    const info = datos.find((dato) => Number(dato.Año) === year);
+    if (!popupRef.current) {
+      popupRef.current = document.createElement("div");
+      popupRef.current.id = "popup";
+      document.body.appendChild(popupRef.current); 
+    }
+
     map = new Map({
-      target: 'map', // Elemento donde se renderiza el mapa
+      target: "map",
       layers: [
         new TileLayer({
-          source: new OSM(), // Capa de OpenStreetMap
+          source: new OSM(),
         }),
         new VectorLayer({
           source: new VectorSource({
-            // url: '/datos/mexicoHigh.json', // Ruta al archivo GeoJSON de estados de México
-            // format: new GeoJSON(),
             features: new GeoJSON().readFeatures(geojsonData, {
-              featureProjection:'EPSG:3857',
-            })
+              featureProjection: "EPSG:3857",
+            }),
           }),
           style: function (feature) {
-            const properties = feature.getProperties(); // Access feature properties
+            const properties = feature.getProperties();
+            var color = (info[properties.name] > info.Total*0.03) ? "rgba(255,0,0,0.4)" : "rgba(0,255,0,0.4)";
             return new Style({
               fill: new Fill({
-                color: 'rgba(100, 150, 237, 0.4)', // Light blue fill
+                color: color,
               }),
               stroke: new Stroke({
-                color: 'rgba(0, 0, 139, 0.7)', // Dark blue stroke
+                color: "rgba(0, 0, 139, 0.7)",
                 width: 1.5,
               }),
               text: new Text({
-                font: '12px Calibri,sans-serif',
+                font: "12px Calibri,sans-serif",
                 fill: new Fill({
-                  color: '#000', // Black text color
+                  color: "#000",
                 }),
                 stroke: new Stroke({
-                  color: '#fff', // White outline
+                  color: "#fff",
                   width: 2,
                 }),
-                text: properties.name || '', // Use the 'name' property for the label
+                text: properties.name || "",
               }),
             });
           },
-          renderBuffer: 1000,
         }),
       ],
       view: new View({
-        center: fromLonLat([-102.5528, 23.6345]), // Coordenadas de México
+        center: fromLonLat([-102.5528, 23.6345]),
         zoom: 5,
       }),
     });
 
     const popup = new Overlay({
-      element: document.getElementById('popup'),
+      element: popupRef.current, // Attach popup to the map
     });
     map.addOverlay(popup);
-    const element = popup.getElement();    
 
-    map.on('click', function (evt) {
+    map.on("click", (evt) => {
       const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
 
-  if (feature) {
-    try {
-      // Get properties of the clicked feature
-      const properties = feature.getProperties();
+      if (feature) {
+        const properties = feature.getProperties();
+        const name = properties.name || "Unknown Feature";
+        const coordinate = evt.coordinate;
 
-      // Example: Displaying a property like `name` (if exists in your GeoJSON)
-      const name = properties.name || 'Unknown Feature';
+        popup.setPosition(coordinate);
 
-      // Get the clicked coordinate
-      const coordinate = evt.coordinate;
+        let popover = Popover.getInstance(popupRef.current);
+        if (popover) {
+          popover.dispose();
+        }
 
-      // Position the popup at the clicked location
-      popup.setPosition(coordinate);
-
-      // Re-initialize the popover each time
-      const info = datos.find((dato) => {
-        return Number(dato.Año) === year;
-      });
-
-      let popover = Popover.getInstance(element);
-      if (popover) {
-        popover.dispose();
+        popover = new Popover(popupRef.current, {
+          animation: true,
+          container: popupRef.current,
+          content: `<p>You clicked on:</p><strong>${name}</strong><br/><p>In the year ${year} it had: ${info[name].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} vehicles registered</p>`,
+          html: true,
+          placement: "top",
+          title: "State Vehicles data",
+        });
+        popover.show();
+      } else {
+        let popover = Popover.getInstance(popupRef.current);
+        if (popover) {
+          popover.dispose();
+        }
       }
+    });
 
-      popover = new Popover(element, {
-        animation: false,
-        container: element,
-        content: `<p>You clicked on:</p><strong>${name}</strong><br/><p>${info[name]}</p>`,
-        html: true,
-        placement: 'top',
-        title: 'Feature Information',
-      });
-      popover.show();
-
-    } catch (error) {
-      console.error(error);
-    }
-            
-
-  } else {
-    // Hide the popup if no feature is clicked
-    let popover = Popover.getInstance(element);
-    if (popover) {
-    }
-  }
-});
-
-
-
-    // Asegurarse de que el mapa se limpia correctamente al desmontarse el componente
     return () => {
       map.setTarget(null);
+      if (popupRef.current) {
+        popupRef.current = null;
+      }
     };
-  }, [geojsonData]);
+  }, [geojsonData, year]);
 
   const years = Array.from({ length: 2023 - 1980 + 1 }, (_, i) => 1980 + i);
 
   function yearSet(e){
-    year = Number(e.target.value);
+    // year = Number(e.target.value);
+    setYear(Number(e.target.value));
   }
 
   function centerState(e){
@@ -156,26 +144,18 @@ function Mapa() {
     const layers = map.getLayers().getArray();
     const vector = layers.find(layer => layer instanceof VectorLayer);
     const feature = vector.getSource().getFeatures().find((f) => {
-      return f.get('name') === selectedState; // Match based on the 'name' property
+      return f.get('name') === selectedState; 
     });
     if (feature) {
-      // Get the geometry and center the map
       const geometry = feature.getGeometry();
       const extent = geometry.getExtent();
       const center = getCenter(extent);
   
       map.getView().setCenter(center);
-      map.getView().setZoom(7); // Adjust zoom level as needed
+      map.getView().setZoom(6); 
   
   }
 }
-
-function divRender(){
-  return(
-    <div id="popup"></div>
-  );
-}
-
   return (
     <div style={{justifyContent:'center', display:'flex', flexDirection:"column", alignItems:"center"}}>
       <div style={{width:"70%"}}>
@@ -223,7 +203,7 @@ function divRender(){
       </div>
       
         <div id="map"  style={{ width: '70%', height: '500px'}}/>
-        {divRender()}
+        <div id="popup"></div>
     </div>
     
   );
