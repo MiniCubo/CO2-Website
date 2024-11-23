@@ -1,10 +1,9 @@
 import axios from "axios";
 
-var apiPath = "http://localhost:5000";
-
-    if (process.env.NODE_ENV === "production") {
-      apiPath = "/api";
-    }
+const apiPath =
+  process.env.NODE_ENV === "production"
+    ? "https://co2-website.onrender.com/api" // Replace with your Render backend URL
+    : "http://localhost:5000";
 
 const instance = axios.create({
     baseURL: apiPath,

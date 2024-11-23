@@ -9,7 +9,7 @@ import { Style, Fill, Stroke, Text} from 'ol/style';
 import { GeoJSON } from 'ol/format';
 import { fromLonLat} from 'ol/proj';
 import instance from "../api/axios";
-import Overlay from 'ol/Overlay.js';
+import Overlay from 'ol/Overlay';
 import { Popover } from 'bootstrap';
 import {getCenter} from 'ol/extent';
 
