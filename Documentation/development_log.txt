@@ -6,7 +6,26 @@ October 15th 2024
 
 We decided to give up on the real time emissions map, becuase the available APIs were of no use, and instead focused on the timelapse map.
 
+October 20th 2024
+
+Implementing OpenLayers API to make the map section.
+
+October 25th 2024
+
+Finished Implementing the map and added some small interactivity with the user.
+
+October 28th 2024
+
+Hosted the webpage in Render.
+
 November 18th 2024
 
 We started to make the react page. Started to translate from ejs to react.
 
+November 20th 2024
+
+Made the changes to make the OpenLayers API work in React and fixed the overlay problems we had in the beta.
+
+November 22th 2024
+
+Hosted the frontend and backend to Render.

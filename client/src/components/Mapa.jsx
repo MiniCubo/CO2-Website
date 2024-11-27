@@ -12,12 +12,15 @@ import instance from "../api/axios";
 import Overlay from 'ol/Overlay';
 import { Popover } from 'bootstrap';
 import {getCenter} from 'ol/extent';
+import { useNavigate } from "react-router-dom";
 
 function Mapa() {
   const [datos, setDatos] = useState([]);
   // var year = 1980;
   const [year, setYear] = useState(Number(1980));
   const [geojsonData, setGeojsonData] = useState(null);
+  const co2Emmisions = 4.6;
+  const navigate = useNavigate(); // Hook para redirigir.
 
   useEffect(()=>{
     instance.get("/geojson").then((response)=>{
@@ -28,6 +31,7 @@ function Mapa() {
       setDatos(response.data.datos);
     }).catch((error)=>{
       console.error("Full Error Object:", error.toJSON ? error.toJSON() : error);
+      navigate("/Error");
     });
   }, []);
 
@@ -35,102 +39,114 @@ function Mapa() {
   var map = null
 
   useEffect(() => {
-    if (!geojsonData) return;
-    const info = datos.find((dato) => Number(dato.Año) === year);
+    if (!geojsonData || !datos) return;
+    var info = datos.find((dato) => Number(dato.Año) === year);
+    if(!info) info = datos[0];
     if (!popupRef.current) {
       popupRef.current = document.createElement("div");
       popupRef.current.id = "popup";
       document.body.appendChild(popupRef.current); 
     }
-
-    map = new Map({
-      target: "map",
-      layers: [
-        new TileLayer({
-          source: new OSM(),
-        }),
-        new VectorLayer({
-          source: new VectorSource({
-            features: new GeoJSON().readFeatures(geojsonData, {
-              featureProjection: "EPSG:3857",
-            }),
+    try{
+      const map = new Map({
+        target: "map",
+        layers: [
+          new TileLayer({
+            source: new OSM(),
           }),
-          style: function (feature) {
-            const properties = feature.getProperties();
-            var color = (info[properties.name] > info.Total*0.03) ? "rgba(255,0,0,0.4)" : "rgba(0,255,0,0.4)";
-            return new Style({
-              fill: new Fill({
-                color: color,
+          new VectorLayer({
+            source: new VectorSource({
+              features: new GeoJSON().readFeatures(geojsonData, {
+                featureProjection: "EPSG:3857",
               }),
-              stroke: new Stroke({
-                color: "rgba(0, 0, 139, 0.7)",
-                width: 1.5,
-              }),
-              text: new Text({
-                font: "12px Calibri,sans-serif",
+            }),
+            style: function (feature) {
+              const properties = feature.getProperties();
+      
+              // Dynamic color logic for polygons
+              const color = info[properties.name] > info.Total * 0.03
+                ? "rgba(255,0,0,0.4)"
+                : "rgba(0,255,0,0.4)";
+      
+              // Return a combined style with a circle for each feature
+              return new Style({
                 fill: new Fill({
-                  color: "#000",
+                  color: color,
                 }),
                 stroke: new Stroke({
-                  color: "#fff",
-                  width: 2,
+                  color: "rgba(0, 0, 139, 0.7)",
+                  width: 1.5,
                 }),
-                text: properties.name || "",
-              }),
-            });
-          },
+                text: new Text({
+                  font: "20px Calibri,sans-serif",
+                  fill: new Fill({
+                    color: "#000",
+                  }),
+                  stroke: new Stroke({
+                    color: "#fff",
+                    width: 2,
+                  }),
+                  text: properties.name + "\nClick on Me" || "Click on Me",
+                }),
+              });
+            },
+          }),
+        ],
+        view: new View({
+          center: fromLonLat([-102.5528, 23.6345]),
+          zoom: 5,
         }),
-      ],
-      view: new View({
-        center: fromLonLat([-102.5528, 23.6345]),
-        zoom: 5,
-      }),
-    });
+      });
 
-    const popup = new Overlay({
-      element: popupRef.current, // Attach popup to the map
-    });
-    map.addOverlay(popup);
-
-    map.on("click", (evt) => {
-      const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
-
-      if (feature) {
-        const properties = feature.getProperties();
-        const name = properties.name || "Unknown Feature";
-        const coordinate = evt.coordinate;
-
-        popup.setPosition(coordinate);
-
-        let popover = Popover.getInstance(popupRef.current);
-        if (popover) {
-          popover.dispose();
+      const popup = new Overlay({
+        element: popupRef.current, // Attach popup to the map
+      });
+      map.addOverlay(popup);
+  
+      map.on("click", (evt) => {
+        const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
+  
+        if (feature) {
+          const properties = feature.getProperties();
+          const name = properties.name || "";
+          const coordinate = evt.coordinate;
+  
+          popup.setPosition(coordinate);
+  
+          let popover = Popover.getInstance(popupRef.current);
+          if (popover) {
+            popover.dispose();
+          }
+  
+          popover = new Popover(popupRef.current, {
+            animation: true,
+            container: popupRef.current,
+            content: `<p>You clicked on:</p><strong>${name}</strong><br/><p>In the year ${year} it had: ${info[name].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} vehicles registered</p><br/><p>Generating ${Math.round(co2Emmisions*info[name]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} tons of CO2 in that year.</p>`,
+            html: true,
+            placement: "top",
+            title: "State Vehicles data",
+          });
+          popover.show();
+        } else {
+          let popover = Popover.getInstance(popupRef.current);
+          if (popover) {
+            popover.dispose();
+          }
         }
-
-        popover = new Popover(popupRef.current, {
-          animation: true,
-          container: popupRef.current,
-          content: `<p>You clicked on:</p><strong>${name}</strong><br/><p>In the year ${year} it had: ${info[name].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} vehicles registered</p>`,
-          html: true,
-          placement: "top",
-          title: "State Vehicles data",
-        });
-        popover.show();
-      } else {
-        let popover = Popover.getInstance(popupRef.current);
-        if (popover) {
-          popover.dispose();
+      });
+  
+      return () => {
+        map.setTarget(null);
+        if (popupRef.current) {
+          popupRef.current = null;
         }
-      }
-    });
-
-    return () => {
-      map.setTarget(null);
-      if (popupRef.current) {
-        popupRef.current = null;
-      }
-    };
-  }, [geojsonData, year]);
+      };
+    }
+    catch(error){
+      console.error("Full Error Object:", error.toJSON ? error.toJSON() : error);
+      navigate("/Error");
+    }
+  }, [geojsonData, year, datos]);
 
   const years = Array.from({ length: 2023 - 1980 + 1 }, (_, i) => 1980 + i);
 

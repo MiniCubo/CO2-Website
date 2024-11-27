@@ -3,6 +3,7 @@ import Grafico1 from "./Grafico1.jsx";
 // import datos from "../datos/datos.js";
 import Grafico2 from "./Grafico2.jsx";
 import instance from "../api/axios.js";
+import { useNavigate } from "react-router-dom";
 
 function RealTime(){
   const [datos, setDatos] = useState([]);
@@ -10,7 +11,7 @@ function RealTime(){
   const [estado, setEstado]=useState("Aguascalientes");
   const [carsPerYear, setCarsPerYear] = useState([]);
   const [statecarsPerYear, setStatecarsPerYear] = useState([]);
-
+  const navigate = useNavigate(); // Hook para redirigir.
   // console.log(listaDeAñosYTotales);
 
   useEffect(()=>{
@@ -18,6 +19,7 @@ function RealTime(){
       setDatos(response.data.datos);
     }).catch((error)=>{
       console.error("Full Error Object:", error.toJSON ? error.toJSON() : error);
+      navigate("/Error");
     });
   },[]);
 

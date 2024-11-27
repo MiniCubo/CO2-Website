@@ -1,0 +1,17 @@
+It has been a difficult project, mainly because of the overlay on our web app to show the mexican map, it caused lot of
+trouble, we have been working independently most of the midterm but yesterday, 26th octuber, we stayed at Soto´s house
+to work on the project, in one afternoon we made a lot of progress mainly because we were researching and coding together,
+when someone had a mistake or someone was tired of watching tutorials on youtube the other ones could detect the mistake,
+give fresh ideas and take turns to work.
+
+To be honest its been a difficult midterm for me, I´ve been strugling with personal difficulties so i havent worked on
+the project that much, my role is mostly support Soto and Samuel to look for solutions and signalize errors while they
+are coding, when we gather up to work in group I search for details that can be upgraded, quality life improvements and 
+design choices.
+
+React is breaking my head, I feel completely lost on how to connect everythng together, most of the general structure has
+been made by Samuel and page structure by Soto, our main difficulty is open layers, that keeps trhowing error and
+stops working if we change even the smalles part of the code that handles it.
+
+Almost everything is done, we just need to finish the documentation like this log, presentation and design document.
+Its been a long semester.

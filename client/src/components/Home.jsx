@@ -8,7 +8,7 @@ function Home() {
         <div className="Objective">
           <h1><b>Objective</b></h1>
           <span>
-            The 2030 Agenda for Sustainable Development, adopted in September 2015 by all United Nations Member States, is a global plan aimed at eradicating poverty, protecting the planet, and ensuring prosperity for all. This ambitious framework is built around 17 Sustainable Development Goals (SDGs), addressing global challenges such as climate change, inequality, environmental degradation, and social justice. The 2030 Agenda not only focuses on economic development but also promotes an integrated approach that considers social well-being and environmental sustainability as fundamental pillars for an equitable future. As we move toward 2030, it is crucial that governments, businesses, organizations, and citizens work together to implement innovative and sustainable solutions that transform the way we live and work, ensuring that no one is left behind.
+          Our goal is to raise awareness about the alarming number of vehicles that circulate daily in Mexico, a key factor in the increase in air pollution. Through education and the promotion of sustainable alternatives such as the use of public transport, bicycles or electric vehicles, I seek to encourage a change in mobility habits that benefits both air quality and people's health. It is essential to act now to reduce our ecological footprint and ensure a cleaner future for future generations.
           </span>
         </div>
       </div>

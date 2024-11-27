@@ -10,3 +10,33 @@ October 14th 2024
 
 I investigated a bit more on the Tomtom and Here APIs and made the conclusion that these do not serve the purpose we were hoping to use them for. I am going to talk to the team
 and the teacher if we are going to discard this idea and just focus on the timelapse map.
+
+Octoer 17th 2024
+
+At the end I will try to use the Openlayers services to display the map and use geojsons to show each state. Now it it just a matter of
+getting the geojsons of the states.
+
+October 19th 2024
+
+Finally found the geojsons and added the map with the overlay to the webpage.
+
+October 25th 2024
+
+I am making changes to the way we obtain the info of each state in the corresponding year in the main.js. Also made the centering of states
+and the change of years.
+
+October 28th 2024
+
+Did some small changes to the backend and the map logic. Hosted the webpage in Render.
+
+November 19th 2024
+
+Implemented the backend in the React proyect. Migrated the data and geojsons to it and made the connections
+
+November 20th 2024
+
+Fixed the Openlayers implementation and it actually works!!!!!
+
+November 22th 2024
+
+Hosted the frontend and backend to Render
