@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, Navigate} from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
@@ -16,7 +16,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/map" element={<Mapa />} />
         <Route path="/timelapse" element={<RealTime />} />
-        <Route path="/error" element={<Error/>} />
+        <Route path="/errorHandling" element={<Error/>} />
+        <Route path = "*" element={<Navigate to="/"/>}/>
       </Routes>
       <Footer />
     </>

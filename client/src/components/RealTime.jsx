@@ -19,7 +19,7 @@ function RealTime(){
       setDatos(response.data.datos);
     }).catch((error)=>{
       console.error("Full Error Object:", error.toJSON ? error.toJSON() : error);
-      navigate("/Error");
+      navigate("/errorHandling");
     });
   },[]);
 

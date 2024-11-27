@@ -31,7 +31,7 @@ function Mapa() {
       setDatos(response.data.datos);
     }).catch((error)=>{
       console.error("Full Error Object:", error.toJSON ? error.toJSON() : error);
-      navigate("/Error");
+      navigate("/errorHandling");
     });
   }, []);
 
@@ -144,7 +144,7 @@ function Mapa() {
     }
     catch(error){
       console.error("Full Error Object:", error.toJSON ? error.toJSON() : error);
-      navigate("/Error");
+      navigate("/errorHandling");
     }
   }, [geojsonData, year, datos]);
 
