@@ -21,6 +21,8 @@ function Mapa() {
   const [geojsonData, setGeojsonData] = useState(null);
   const co2Emmisions = 4.6;
   const navigate = useNavigate(); // Hook para redirigir.
+  const layers = useRef(null);
+  const vector = useRef(null);
 
   useEffect(()=>{
     instance.get("/geojson").then((response)=>{
@@ -36,7 +38,7 @@ function Mapa() {
   }, []);
 
   const popupRef = useRef(null);
-  var map = null
+  const map = useRef(null);
 
   useEffect(() => {
     if (!geojsonData || !datos) return;
@@ -48,7 +50,7 @@ function Mapa() {
       document.body.appendChild(popupRef.current); 
     }
     try{
-      const map = new Map({
+       map.current = new Map({
         target: "map",
         layers: [
           new TileLayer({
@@ -101,10 +103,10 @@ function Mapa() {
       const popup = new Overlay({
         element: popupRef.current, // Attach popup to the map
       });
-      map.addOverlay(popup);
+      map.current.addOverlay(popup);
   
-      map.on("click", (evt) => {
-        const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
+      map.current.on("click", (evt) => {
+        const feature = map.current.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
   
         if (feature) {
           const properties = feature.getProperties();
@@ -135,8 +137,11 @@ function Mapa() {
         }
       });
   
+      layers.current = map.current.getLayers().getArray();
+      vector.current = layers.current.find(layer => layer instanceof VectorLayer);
+
       return () => {
-        map.setTarget(null);
+        map.current.setTarget(null);
         if (popupRef.current) {
           popupRef.current = null;
         }
@@ -157,9 +162,7 @@ function Mapa() {
 
   function centerState(e){
     const selectedState = e.target.value;
-    const layers = map.getLayers().getArray();
-    const vector = layers.find(layer => layer instanceof VectorLayer);
-    const feature = vector.getSource().getFeatures().find((f) => {
+    const feature = vector.current.getSource().getFeatures().find((f) => {
       return f.get('name') === selectedState; 
     });
     if (feature) {
@@ -167,8 +170,8 @@ function Mapa() {
       const extent = geometry.getExtent();
       const center = getCenter(extent);
   
-      map.getView().setCenter(center);
-      map.getView().setZoom(6); 
+      map.current.getView().setCenter(center);
+      map.current.getView().setZoom(6); 
   
   }
 }
