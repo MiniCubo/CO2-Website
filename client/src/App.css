@@ -342,7 +342,7 @@
   @media (max-width: 768px) {
     .Objective{
       flex-wrap: wrap;
-      margin: 10% !important;
+      margin: 50% !important;
     }
     .UN{
       padding-top: 3rem;
@@ -353,6 +353,9 @@
     }
   }
 
+  .parrafo{
+    padding-left: 20px;
+  }
 
   .Objective *{
     margin: 10px;
